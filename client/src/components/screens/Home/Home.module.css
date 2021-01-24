@@ -1,0 +1,20 @@
+.mycard{
+    max-width: 600px;
+    height: max-content;
+    margin: 26px auto !important;
+    padding:40px;
+}
+
+.inputfield input[type=text]:focus {
+    border-bottom: 1px solid black !important;
+    box-shadow: 0 1px 0 0 black !important;
+  }
+
+.iconbutton{
+    background-color:white;
+    width:30px;
+    height:25px;
+    border:none;
+    color:black;
+    box-shadow:none !important;
+}
