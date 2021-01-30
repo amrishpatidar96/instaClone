@@ -16,6 +16,7 @@
     "react-scripts": "4.0.1",
     "reactstrap": "^8.8.1",
     "reactstrap-toast": "^1.0.6",
+    "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

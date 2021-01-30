@@ -84,10 +84,16 @@ router.post('/signin',(req,res)=>{
             bcrypt.compare(password, savedUser.password)
             .then(doMatch=>{
                 if(doMatch){
-                    console.log(savedUser._id+JWT_SECRET_KEY);
+                    //console.log(savedUser._id+JWT_SECRET_KEY);
                     //res.json({message:"successfully signed in"});
                     const token = jwt.sign({_id: savedUser._id},JWT_SECRET_KEY);
-                    const user = {userId: savedUser._id,email: savedUser.email,name: savedUser.name}
+                    const user = {userId: savedUser._id,
+                        email: savedUser.email,
+                        name: savedUser.name,
+                        following:savedUser.following,
+                        followers:savedUser.followers
+                    
+                    }
                     console.log(user);
                     res.json({
                         token: token,

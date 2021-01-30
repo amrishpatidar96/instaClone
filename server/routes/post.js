@@ -37,6 +37,25 @@ router.post('/createpost',requireLogin,(req,res)=>{
 router.get('/allpost',requireLogin,(req,res)=>{
     Post.find()
     .populate("postedBy","_id name")
+    .populate("comments.postedBy","_id name")
+    .then(posts=>{
+
+        res.json({posts})
+    })
+    .catch(error => {
+        console.log(error);
+    });
+});
+
+router.get('/followingpost',requireLogin,(req,res)=>{
+
+    //this route is for getting posts of friends whom i am following 
+
+    Post.find({
+        postedBy:{$in:req.user.following}
+    })
+    .populate("postedBy","_id name")
+    .populate("comments.postedBy","_id name")
     .then(posts=>{
 
         res.json({posts})
@@ -59,6 +78,13 @@ router.get('/myposts',requireLogin,(req,res)=>{
 })
 
 
+
+
+
+
+
+
+
 router.put('/like',requireLogin,(req,res)=>{
     Post.findByIdAndUpdate(req.body.postId,{
         $push:{
@@ -66,7 +92,8 @@ router.put('/like',requireLogin,(req,res)=>{
         }
     },{
         new:true
-    }).exec((err,result)=>{
+    }).populate("postedBy","_id name")
+    .exec((err,result)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
@@ -107,8 +134,8 @@ router.put('/comment',requireLogin,(req,res)=>{
     },{
         new:true
     }).populate("comments.postedBy","_id name")
-    
-    exec((err,result)=>{
+    .populate("postedBy","_id name")
+    .exec((err,result)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
@@ -118,6 +145,26 @@ router.put('/comment',requireLogin,(req,res)=>{
 
 })
 
+router.delete('/deletepost/:postId',requireLogin,(req,res)=>{
+    Post.findOne({_id:req.params.postId})
+    .populate("postedBy","_id")
+    .exec((err,post)=>{
+        if(err || !post){
+            return res.status(422).json({error:err})
+        }
+        if(post.postedBy._id.toString() === req.user._id.toString()){
+            post.remove()
+            .then(result=>{
+                res.json({
+                   result: result
+                })
+            })
+            .catch(err=>console.log(err))
+        }
+    })
+  
+
+})
 
 
 

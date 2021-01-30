@@ -29,7 +29,7 @@ const NavBar = () => {
         <Link to="/createpost">CreatePost</Link>
       </li>,
       <li key="/logout">
-      <Button onClick={logout}>Logout</Button>
+      <Button onClick={logout} style={{backgroundColor:"black"}}>Logout</Button>
     </li>
 
        ];

@@ -26,10 +26,10 @@ const CreatePost = () => {
     .then(res=>res.json())
     .then(data=>{
       setUrl(data.url);
-      console.log(
-      title,
-      body,
-      data.url);
+      // console.log(
+      // title,
+      // body,
+      // data.url);
       
 
 
