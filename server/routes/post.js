@@ -38,6 +38,7 @@ router.get('/allpost',requireLogin,(req,res)=>{
     Post.find()
     .populate("postedBy","_id name")
     .populate("comments.postedBy","_id name")
+    .sort('-createdAt')
     .then(posts=>{
 
         res.json({posts})
@@ -56,6 +57,7 @@ router.get('/followingpost',requireLogin,(req,res)=>{
     })
     .populate("postedBy","_id name")
     .populate("comments.postedBy","_id name")
+    .sort('-createdAt')
     .then(posts=>{
 
         res.json({posts})
@@ -76,13 +78,6 @@ router.get('/myposts',requireLogin,(req,res)=>{
         console.log(error);
     })
 })
-
-
-
-
-
-
-
 
 
 router.put('/like',requireLogin,(req,res)=>{
@@ -111,7 +106,9 @@ router.put('/unlike',requireLogin,(req,res)=>{
         }
     },{
         new:true
-    }).exec((err,result)=>{
+    })
+    .populate("postedBy","_id name")
+    .exec((err,result)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{

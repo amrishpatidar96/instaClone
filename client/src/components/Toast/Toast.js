@@ -5,7 +5,7 @@ import { Button, Toast, ToastBody } from 'reactstrap';
     const [show,setShow] = useState(false);
 
     useEffect(()=>{
-        console.log("use");
+       // console.log("use");
         setShow(props.show);
         let timeout = setTimeout(()=>{setShow(false)},15000)
 
@@ -15,7 +15,7 @@ import { Button, Toast, ToastBody } from 'reactstrap';
     },[])
 
     return (
-    <Toast isOpen={show} style={{backgroundColor:'green',width:'280px'}}>
+    <Toast isOpen={show} style={{backgroundColor: props.color || 'green' ,width:'280px',height:'150px'}}>
         <ToastBody >
             <h6 style={{color:'white',display:'inline',marginRight:'20px'}}>{props.message}</h6>  
             <Button onClick={()=>{setShow(false)}}>X</Button>

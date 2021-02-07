@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import classes from './Signin.module.css';
 import {Link,useHistory} from 'react-router-dom';
 
@@ -17,18 +17,34 @@ const Signup = ()=>{
     opacity:'0.5',
     cursor: 'pointer'
   });
+  const [image,setImage] = useState("");
+  const [url,setUrl] = useState("");
   
   const history = useHistory(); 
+  
+  const uploadImage = ()=>{
 
-  const PostData = ()=>{
-    //eslint-disable-next-line
-    if(!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email))){
-      setErrStyle({...errStyle,display:'block'});
-      setError("invalid email format");
-      return ;
+    const data  = new FormData();
+    data.append("file",image);
+    data.append("upload_preset","instaclone");
+    data.append("cloud_name","instagramclone1");
+    fetch("https://api.cloudinary.com/v1_1/instagramclone1/image/upload",{
+      method: "post",
+      body: data
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      setUrl(data.url);
+    })
+    .catch(err=>console.log(err))
   }
 
 
+
+
+  useEffect(()=>{
+    
+   if(url){
     fetch("/signup",{
       method:"post",
       headers:{
@@ -37,7 +53,8 @@ const Signup = ()=>{
       body:JSON.stringify({
         name:name,
         email:email,
-        password:password
+        password:password,
+        pic:url
       }),
       
     })
@@ -64,6 +81,72 @@ const Signup = ()=>{
         }
     })
     .catch(err=>{console.log(err)})
+   }
+
+  },[url]);
+
+
+
+
+
+
+
+  const PostData = ()=>{
+
+    if(!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email))){
+      setErrStyle({...errStyle,display:'block'});
+      setError("invalid email format");
+      return ;
+    }
+
+
+
+    if(image){
+      uploadImage();
+    }
+    else{
+      fetch("/signup",{
+        method:"post",
+        headers:{
+          "Content-Type": "application/json"
+        },
+        body:JSON.stringify({
+          name:name,
+          email:email,
+          password:password,
+          pic:url
+        }),
+        
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        console.log(data);
+          if(data.error){
+            setError(data.error);
+            console.log("rendring start");
+            setErrStyle({
+              ...errStyle,
+              display:'block',
+            });
+          }
+          else{
+            setError(data.message);
+            setErrStyle({
+              ...errStyle,
+              display:'block',
+              backgroundColor:'green',
+            });
+            history.push("/signin");
+            //setError(data.error);
+          }
+      })
+      .catch(err=>{console.log(err)})
+    }
+
+    //eslint-disable-next-line
+   
+
+
   }
 
   console.log("rendring new");
@@ -102,6 +185,22 @@ const Signup = ()=>{
           placeholder="username" 
           value={name}
           onChange={(e)=>setName(e.target.value)}/>
+          
+          <div className="file-field" style={{marginTop:'16px'}}>
+              <div className={[classes.mybtn,"btn"].join(" ")}>
+                <span>File</span>
+                <input type="file"  onChange={(e)=>{setImage(e.target.files[0])}}/>
+              </div>
+              <div className="file-path-wrapper">
+                <input
+                  className="file-path validate"
+                  type="text"
+                  placeholder="Upload one or more files"
+                  value={image?image.name:""}
+                  readOnly
+                />
+              </div>
+          </div>
 
           <button 
           className={[classes.mybtn,"btn waves-effect waves-light"].join(" ")} 

@@ -7,9 +7,10 @@ import Signup from "./components/screens/Signup/Signup";
 import Profile from "./components/screens/Profile/Profile";
 import CreatePost from "./components/screens/CreatePost/CreatePost";
 import UserProfile from "./components/screens/UserProfile/UserProfile";
-
 import {reducer,initialState} from './reducers/userReducer';
-
+import FollowingPosts from './components/screens/FollowingPosts/FollowingPosts';
+import ResetPassword from "./components/screens/ResetPassword/ResetPassword";
+import NewPassword from "./components/screens/NewPassword/NewPassword";
 
 export const UserContext = createContext();
 
@@ -17,10 +18,6 @@ const Routing = (props)=>{
     console.log("rendering");
     const history = useHistory();
     const {state,dispatch} = useContext(UserContext);
-   
-    if(!state){
-      history.push('/signin');
-    }
 
 
     useEffect(()=>{
@@ -32,7 +29,8 @@ const Routing = (props)=>{
         history.push("/");
       }
       else{
-        history.push('/signin')
+        if(!history.location.pathname.startsWith('/reset-password') )
+            history.push('/signin') ;
       }
     
     
@@ -40,6 +38,9 @@ const Routing = (props)=>{
 
     return(
       <Switch>
+          <Route exact path="/reset-password/:token" component={NewPassword}/>
+          <Route exact path="/reset-password" component={ResetPassword}/>
+          <Route exact path="/followingposts" component={FollowingPosts}/>
           <Route exact path="/signin" component={Signin} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/createpost" component={CreatePost} />

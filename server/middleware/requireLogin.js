@@ -7,6 +7,8 @@ const User = mongoose.model('User');
 
 
 module.exports = (req,res,next) => {
+
+    
     const {authorization} = req.headers;
     //authorization === 'auth "+token
     if(!authorization){

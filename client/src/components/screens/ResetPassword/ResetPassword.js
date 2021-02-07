@@ -1,12 +1,15 @@
 import React,{useContext, useState}from 'react';
 import classes from './Signin.module.css';
 import {Link,useHistory} from 'react-router-dom';
-import {UserContext} from '../../../App';
-const Signin = ()=>{
-  const {state,dispatch} = useContext(UserContext);
-  const [password,setPassword] = useState("");
+import Toast from '../../Toast/Toast'
+
+
+const ResetPassword = ()=>{
+
   const [email,setEmail] = useState("");
   const [error,setError] = useState("");
+  const [message,setMessage] = useState("")
+
   const [errStyle,setErrStyle] = useState({
     display: 'none',
     padding: '10px',
@@ -38,43 +41,21 @@ const Signin = ()=>{
       return ;
     }
 
-    console.log(email+" "+password);
 
-    fetch("/signin",{
+    fetch("/reset-password",{
       method:"post",
       headers:{
         "Content-Type": "application/json"
       },
       body:JSON.stringify({
-        email:email,
-        password:password
+        email:email
       }),
       
     })
-    .then(res=>{console.log(res); return res.json()})
-    .then(data=>{
-       console.log(data);
-        if(data.error){
-          setError(data.error);
-          //console.log("rendring start");
-          setErrStyle({
-            ...errStyle,
-            display:'block',
-          });
-        }
-        else{
-          
-          localStorage.setItem("jwt",data.token);
-          localStorage.setItem("user",JSON.stringify(data.currentUser));
-          dispatch({type:"USER",payload:data.currentUser});
-          setError(data.message);
-          setErrStyle({
-            ...errStyle,
-            display:'block',
-            backgroundColor:'green',
-          });
-          history.push("/");
-        }
+    .then(res=>{ return res.json()})
+    .then(data=>{     
+          setMessage(data.message);
+          //history.push("/");      
     })
     .catch(err=>{console.log(err)})
   }
@@ -86,10 +67,11 @@ const errSignin = error?(<span style={errStyle} >{error} <strong style={{float:'
 
     return (
       <div className={classes.mycard}>
+          
         <div className={["card",classes.authcard,classes.inputfield].join(" ")}>
           {errSignin}
-
-          <h3>Instagram</h3>
+          <Toast message={message} show={true} />
+          <h3>Reset Password</h3>
 
           <input 
           type="text" 
@@ -98,28 +80,17 @@ const errSignin = error?(<span style={errStyle} >{error} <strong style={{float:'
           onChange={(event)=>{setEmail.bind(this,event.target.value)()}}
           />
           
-          <input 
-          type="password" 
-          placeholder="password"
-          value={password}
-          onChange={(e)=>setPassword(e.target.value)} />
           
           <button 
           className={[classes.mybtn,"btn waves-effect waves-light"].join(" ")} 
           type="submit"
           onClick={PostData}
           >
-            Signin
-          </button>,
-
-          <h6 >
-            <Link to="./signup" >create new account</Link> 
-          </h6>
-
-          <h6><Link to="./reset-password" >reset password</Link></h6>
+          Send Email
+          </button>
         </div>
       </div>
     );
 }  
 
-export default Signin;
+export default ResetPassword;

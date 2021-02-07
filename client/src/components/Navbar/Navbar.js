@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import "./Navbar.module.css";
+import { NavLink } from "react-router-dom";
+import classes from "./Navbar.module.css";
 import {UserContext} from '../../App';
 import {Button} from 'reactstrap';
 
@@ -23,24 +23,27 @@ const NavBar = () => {
      {
       return [
         <li key="/profile">
-        <Link to="/profile">Profile</Link>
+        <NavLink  className={classes.tab}    activeClassName={classes.active}  to="/profile">Profile</NavLink>
       </li>,
       <li key="/createpost">
-        <Link to="/createpost">CreatePost</Link>
+        <NavLink  className={classes.tab}    activeClassName={classes.active} to="/createpost">CreatePost</NavLink>
+      </li>,
+      <li key="/followingposts">
+        <NavLink  className={classes.tab}    activeClassName={classes.active} to="/followingposts">FollowingPosts</NavLink>
       </li>,
       <li key="/logout">
-      <Button onClick={logout} style={{backgroundColor:"black"}}>Logout</Button>
-    </li>
+        <NavLink  className={classes.tab}    activeClassName={classes.active} to="/signin"   onClick={logout} >Logout</NavLink>
+      </li>
 
        ];
      }
     else{
       return [
         <li key="/signin">
-        <Link   to="/signin">Signin</Link>
+        <NavLink  className={classes.tab}    activeClassName={classes.active}  to="/signin">Signin</NavLink>
       </li>,
       <li key="/signup">
-        <Link   to="/signup">Signup</Link>
+        <NavLink  className={classes.tab}    activeClassName={classes.active}   to="/signup">Signup</NavLink>
       </li>
       ]
     }
@@ -49,9 +52,9 @@ const NavBar = () => {
   return (
     <nav>
       <div className="nav-wrapper white">
-        <Link to="#" className="brand-logo left" style={{ fontFamily: 'Grand Hotel,cursive' }}>
+        <NavLink  className={classes.tab}     to="/" className="brand-logo left" style={{ fontFamily: 'Grand Hotel,cursive',color: 'black'}}>
           Instagram
-        </Link>
+        </NavLink>
         <ul id="nav-mobile" className="right">
 
         {renderList()}

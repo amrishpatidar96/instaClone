@@ -8,7 +8,7 @@ import {useHistory} from 'react-router-dom';
 import { v4 as uid } from 'uuid';
 
 
-const Home = () => {
+const Followingposts = () => {
     const [postsdata, setPosts] = useState([]);
     const {state,dispatch} = useContext(UserContext);
     const history = useHistory();
@@ -18,7 +18,7 @@ const Home = () => {
 
 
     useEffect(() => {
-        fetch('/allpost', {
+        fetch('/followingpost', {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
             }
@@ -165,7 +165,7 @@ const Home = () => {
                 }>
                   <h5 style={{cursor: 'pointer'}}>  {post.postedBy.name}</h5>
                     {
-                 state && state.userId && (post.postedBy._id === state.userId)  && <BsTrashFill size={25} style={{float: "right",color:"black",cursor:'pointer'}} onClick={deletePost.bind(this,post._id)}/>
+                  (post.postedBy._id === state.userId)  && <BsTrashFill size={25} style={{float: "right",color:"black",cursor:'pointer'}} onClick={deletePost.bind(this,post._id)}/>
                 }
                 </h5>
               
@@ -230,4 +230,4 @@ const Home = () => {
     );
 }
 
-export default Home;
+export default Followingposts;

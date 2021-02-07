@@ -12,7 +12,8 @@ export const reducer  = (state ,action)=>{
         return {
             ...state,
             followers:action.payload.followers,
-            following:action.payload.following
+            following:action.payload.following,
+            pic:action.payload.pic,
         }
     }
     return state;

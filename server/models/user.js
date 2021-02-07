@@ -22,7 +22,13 @@ const userSchema = new mongoose.Schema({
     followers:[{
         type:ObjectId,
         ref:"User"
-    }]
+    }],
+    pic:{
+        type:"String",
+        required:false
+    }, 
+    resetToken:String,
+    expireToken:Date
 })
 
 mongoose.model("User",userSchema);

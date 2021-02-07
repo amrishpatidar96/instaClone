@@ -1,9 +1,30 @@
 
 
-a{
-    color: black !important;
+nav ul li a{
+    background-color:white ;
+    color:black ;
+    text-decoration:none;
 }
 
+.tab{
+    color:black;
+    
+}
 .brand-logo{
     font-family: Grand Hotel, cursive;
+}
+
+.active{
+    background-color:black !important;
+    color:white !important;
+}
+
+nav ul li a:hover{
+    background-color:rgb(206, 206, 206) ;
+    color:black ;
+
+}
+
+h6{
+    color:black;
 }

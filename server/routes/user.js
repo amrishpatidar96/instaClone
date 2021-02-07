@@ -20,6 +20,22 @@ router.get('/myprofile',requireLogin,(req, res)=>{
     })
 })
 
+router.post('/updateMyprofilePic',requireLogin,(req, res)=>{
+    //console.log(req.body)
+   const {pic} = req.body;
+   console.log(pic);
+    User.findByIdAndUpdate(req.user._id,{
+        pic:pic
+    },{new:true})
+    .select("-password")
+    .then((myprofile)=>{
+        return res.json({myprofile});
+    })
+    .catch((err)=>{
+        return res.status(404).json({error:err})
+    })
+})
+
 
 
 
@@ -61,7 +77,7 @@ router.put('/follow',requireLogin,(req,res)=>{
 
     User.findByIdAndUpdate(req.body.followId,{
         $push:{
-            followers:req.body.followId
+            followers:req.user._id
         }
     },
     {new:true},
@@ -98,7 +114,7 @@ router.put('/unfollow',requireLogin,(req,res)=>{
 
     User.findByIdAndUpdate(req.body.unfollowId,{
         $pull:{
-            followers:req.body.unfollowId
+            followers:req.user._id
         }
     },
     {new:true},

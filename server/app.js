@@ -20,9 +20,11 @@ mongoose.connection.on('error',(err)=>{
 })
 
 app.use(express.json());
+//app.use(express.urlencoded({ extended: true }));
 app.use(require('./routes/auth'));
-app.use(require('./routes/post'));
 app.use(require('./routes/user'));
+app.use(require('./routes/post'));
+
 
 
 app.listen(PORT, () => {

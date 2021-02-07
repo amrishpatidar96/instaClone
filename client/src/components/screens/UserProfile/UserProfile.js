@@ -21,7 +21,7 @@ const UserProfile = () => {
             return res.json();
         })
         .then((res)=>{
-            console.log(res);
+            //console.log(res);
             setUserProfile(res)
         })
         .catch(err =>console.error(err));
@@ -125,16 +125,18 @@ const UserProfile = () => {
                     
                     <div className="mt-2" style={{display: "flex",justifyContent: "space-between",width: "109%"}}>
                         <h6>{userProfile.posts && userProfile.posts.length} posts</h6>
-                        <h6>{userProfile.user && userProfile.user.followers.length}followers</h6>
-                        <h6>{userProfile.user && userProfile.user.following.length}following</h6>
+                        <h6>{userProfile.user && userProfile.user.followers.length} followers</h6>
+                        <h6>{userProfile.user && userProfile.user.following.length} following</h6>
                     </div>
-                    <Button 
-                    className="mt-1"
-                    style={{backgroundColor:"green",color:'white'}}
-                    onClick={() =>{
-                        userProfile.user && userProfile.user.followers.includes(userId) ? unfollow(userId) :  follow(userId)
-                    }} 
-                    >{ userProfile.user && userProfile.user.followers.includes(userId)?"unfollow":"follow"}</Button>
+                    {
+                        state && state.userId !== userId && <Button 
+                        className="mt-1"
+                        style={{backgroundColor:"green",color:'white'}}
+                        onClick={() =>{
+                            userProfile.user && userProfile.user.followers.includes(state.userId) ? unfollow(userId) :  follow(userId)
+                        }} 
+                        >{ userProfile.user && userProfile.user.followers.includes(state.userId)?"unfollow":"follow"}</Button>
+                    }
                 </div>
          
             </div>
